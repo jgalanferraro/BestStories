@@ -36,9 +36,23 @@ The request to https://hacker-news.firebaseio.com/v0/beststories.json already re
 
 ## Improvements
 
-The main one would be optimazing the caching strategy, maybe with a deph research of the data stability in order to get the right times the data should stay in the cache and also subscribing to the firebase service in order to get the updates before the user request them.
+The main one would be optimazing the caching strategy, maybe with a deph research of the data stability in order to get the time the data should stay in the cache and also subscribing to the firebase service in order to get the updates before the user request them.
 IF scalability was needed, distributed cache would replace the in-memory cache and the api would need to integrate with a event bus to connect with other services.
 
 ## How to use it
+
+Using the uris:
+
+baseUrl/api/beststories/{top:int}
+
+baseUrl/api/beststories?$top=n
+
+Can be deployed on IIS or just build it and run BestStories.exe. Just take into account that the port will be different.
+
+As an extra it is deployed in Azure at https://beststories20231212191931.azurewebsites.net and can be called as:
+
+https://beststories20231212191931.azurewebsites.net/api/beststories/2
+
+https://beststories20231212191931.azurewebsites.net/api/beststories?$top=3
 
 
