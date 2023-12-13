@@ -47,8 +47,8 @@ namespace BestStories.Tests.Requests
         [Test]
         public async Task CanGetBestStoriesByQueryTop2()
         {
-            var apiStory1 = new ApiStory(_story1);
-            var apiStory2 = new ApiStory(_story2);
+            var apiStory1 = ApiStory.Create(_story1);
+            var apiStory2 = ApiStory.Create(_story2);
             var expectedStories = new ApiStory[] { apiStory1, apiStory2 };
             var options = new ODataQueryOptions<SortedStory>(_oDataQueryContext, _httpRequest);
             var request = new GetBestStoriesByQueryRequest(options);

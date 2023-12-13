@@ -7,7 +7,10 @@ namespace BestStories
                            int? Score,
                            int? CommentCount)
     {
-        public ApiStory(Story story) : this(story.Title, story.Url, story.By, UnixTimeStampToDateTime(story.Time ?? 0), story.Score, story.Descendants) { }
+        public static ApiStory Create(Story story)
+        {
+            return new ApiStory(story.Title, story.Url, story.By, UnixTimeStampToDateTime(story.Time ?? 0), story.Score, story.Descendants);
+        }
 
         private static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {

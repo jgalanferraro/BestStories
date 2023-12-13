@@ -1,5 +1,6 @@
 ﻿using BestStories.Request;
 using Microsoft.Extensions.Caching.Memory;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 
@@ -8,13 +9,16 @@ namespace BestStories.Tests.Requests
     [TestFixture]
     public class GetStoryRequestTest
     {
+        private const int cachedId = 1;
+        private const int httpId = 2;
         private IMemoryCache _memoryCache;
-        private const int id = 21233041;
+        private Mock<IHackerNewsApiClient> _hackerNewsApiClient;
 
         [SetUp]
         public void Init()
         {
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
+            _hackerNewsApiClient = new Mock<IHackerNewsApiClient>();
         }
 
         [TearDown]
@@ -26,30 +30,34 @@ namespace BestStories.Tests.Requests
         [Test]
         public async Task CanGetStoryFromHackerNews()
         {
-            var request = new GetStoryRequest(id);
-            var handler = new GetStoryHandler(_memoryCache);
+            var expectedStory = new Story(httpId);
+            _hackerNewsApiClient.Setup(client => client.GetStoryAsync(httpId)).ReturnsAsync(expectedStory);
 
-            var cachedStory = _memoryCache.Get(id);
+            var request = new GetStoryRequest(httpId);
+            var handler = new GetStoryHandler(_memoryCache, _hackerNewsApiClient.Object);
+
+            var cachedStory = _memoryCache.Get(httpId);
 
             var result = await handler.Handle(request, new CancellationToken());
 
             Assert.That(cachedStory, Is.Null);
             Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(expectedStory));
         }
 
         [Test]
-        public async Task CanGetBestStoriesIdsFromCache()
+        public async Task CanGetStoryFromCache()
         {
-            var request = new GetStoryRequest(id);
-            var handler = new GetStoryHandler(_memoryCache);
+            var request = new GetStoryRequest(cachedId);
+            var handler = new GetStoryHandler(_memoryCache, _hackerNewsApiClient.Object);
 
-            var cachedStory = new Story(id);
-            _memoryCache.Set(id, cachedStory);
+            var expectedStory = new Story(cachedId);
+            _memoryCache.Set(cachedId, expectedStory);
 
             var result = await handler.Handle(request, new CancellationToken());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.EqualTo(cachedStory));
+            Assert.That(result, Is.EqualTo(expectedStory));
         }
     }
 }

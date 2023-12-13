@@ -30,7 +30,7 @@ namespace BestStories.Request
 
                 if (story is not null)
                 {
-                    apiStories.Add(new ApiStory(story));
+                    apiStories.Add(ApiStory.Create(story));
                 }
             }
 

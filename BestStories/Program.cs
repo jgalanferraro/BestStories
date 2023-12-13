@@ -1,3 +1,4 @@
+using BestStories;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddMemoryCache();
+builder.Services.AddSingleton<IHackerNewsApiClient, HackerNewsApiClient>();
 
 var app = builder.Build();
 
@@ -28,3 +30,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

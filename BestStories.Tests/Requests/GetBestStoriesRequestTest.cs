@@ -43,9 +43,9 @@ namespace BestStories.Tests.Requests
 
         private static object[] Top1 =
         {
-            new object[] { 1, new ApiStory[] { new ApiStory(story1) } },
-            new object[] { 2, new ApiStory[] { new ApiStory(story1), new ApiStory(story2) } },
-            new object[] { 3, new ApiStory[] { new ApiStory(story1), new ApiStory(story2), new ApiStory(story3) } }
+            new object[] { 1, new ApiStory[] { ApiStory.Create(story1) } },
+            new object[] { 2, new ApiStory[] { ApiStory.Create(story1), ApiStory.Create(story2) } },
+            new object[] { 3, new ApiStory[] { ApiStory.Create(story1), ApiStory.Create(story2), ApiStory.Create(story3) } }
         };
     }
 }
